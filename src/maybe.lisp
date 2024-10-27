@@ -16,10 +16,15 @@
 (defun apply-maybe (value function &REST parameters)
   (if (maybe-error-p value)
       value
-      (let ((new-value
-	      (apply function
-		     (append (list (just-value value)) parameters))))
-	(bind-maybe new-value))))
+      (handler-case
+	  (progn
+	    (let* ((current-value (just-value value))
+		   new-value
+		   (parameter-list (append (list current-value) parameters)))
+	      (setf new-value (apply function parameter-list))
+	      (bind-maybe new-value)))
+	(error (c)
+	  (set-error value c)))))
 
 (defun maybe-error-p (value)
   (if
@@ -30,4 +35,5 @@
    T))
 
 (defun set-error (value label)
-  (setf (just-error value) label))
+  (setf (just-error value) label)
+  value)
