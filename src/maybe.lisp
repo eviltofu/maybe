@@ -30,9 +30,9 @@
   (if
    (and
     (just-p value)
-    (null (just-error value)))
-   NIL
-   T))
+    (not (null (just-error value))))
+   T
+   NIL))
 
 (defun set-error (value label)
   (setf (just-error value) label)

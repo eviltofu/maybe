@@ -10,13 +10,13 @@
   (let ((m (bind-maybe 100))
 	(n (make-just
 	    :value 50
-	    :error "No"))) 
+	    :error (return-error "No")))) 
 
     (is = 100 (just-value m))
     (false (just-error m))
     (true (just-p m))
 
-    (true (string-equal "No" (just-error n)))
+    (true (string-equal "No" (message (just-error n))))
     (true (maybe-error-p n))
     (false (maybe-error-p m))))
 
@@ -32,6 +32,7 @@
     (setf n (apply-maybe m #'- 1))
     (true (just-p n))
     (true (maybe-error-p n))
+    (false (maybe-error-p nil))
     (setf n (return-error "Errors"))
     (true (string-equal (message (just-error m)) (message n)))
     (setf m (bind-maybe 0))
