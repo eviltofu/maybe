@@ -10,11 +10,14 @@
 
 ;;; functions
 
-(defun bind-maybe (value)
+(defun bind-value (value)
   (make-just :value value :error NIL))
 
-(defun apply-maybe (value function &REST parameters)
-  (if (maybe-error-p value)
+(defun bind-error (er) 
+  (make-just :value nil :error er))
+
+(defun apply-function (value function &REST parameters)
+  (if (error-p value)
       value
       (handler-case
 	  (progn
@@ -22,11 +25,11 @@
 		   new-value
 		   (parameter-list (append (list current-value) parameters)))
 	      (setf new-value (apply function parameter-list))
-	      (bind-maybe new-value)))
+	      (bind-value new-value)))
 	(error (c)
 	  (set-error value c)))))
 
-(defun maybe-error-p (value)
+(defun error-p (value)
   (if
    (and
     (just-p value)

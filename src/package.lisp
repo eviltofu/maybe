@@ -7,7 +7,8 @@
 	   just-p
 	   just-value
 	   just-error
-	   bind-maybe
-	   apply-maybe
-	   maybe-error-p
+	   bind-value
+	   bind-error
+	   apply-function
+	   error-p
 	   set-error))
