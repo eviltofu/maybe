@@ -2,11 +2,11 @@
 
 (defpackage #:maybe
   (:use #:cl)
-  (:export make-just
-	   just
-	   just-p
-	   just-value
-	   just-error
+  (:export make-maybe
+	   maybe
+	   maybe-p
+	   maybe-value
+	   maybe-error
 	   bind-value
 	   bind-error
 	   apply-function

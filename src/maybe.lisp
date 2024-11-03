@@ -4,24 +4,24 @@
 
 ;;; structs
 
-(defstruct just
+(defstruct maybe
   value
   error)
 
 ;;; functions
 
 (defun bind-value (value)
-  (make-just :value value :error NIL))
+  (make-maybe :value value :error NIL))
 
 (defun bind-error (er) 
-  (make-just :value nil :error er))
+  (make-maybe :value nil :error er))
 
 (defun apply-function (value function &REST parameters)
   (if (error-p value)
       value
       (handler-case
 	  (progn
-	    (let* ((current-value (just-value value))
+	    (let* ((current-value (maybe-value value))
 		   new-value
 		   (parameter-list (append (list current-value) parameters)))
 	      (setf new-value (apply function parameter-list))
@@ -32,11 +32,11 @@
 (defun error-p (value)
   (if
    (and
-    (just-p value)
-    (not (null (just-error value))))
+    (maybe-p value)
+    (not (null (maybe-error value))))
    T
    NIL))
 
 (defun set-error (value label)
-  (setf (just-error value) label)
+  (setf (maybe-error value) label)
   value)

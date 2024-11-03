@@ -8,14 +8,14 @@
 (define-test "bind-maybe-tests"
   :parent test-suite
   (let ((m (bind-value 100))
-	(n (make-just
+	(n (make-maybe
 	    :value 50
 	    :error (return-error "No")))) 
 
-    (is = 100 (just-value m))
-    (false (just-error m))
-    (true (just-p m))
-    (true (string-equal "No" (message (just-error n))))
+    (is = 100 (maybe-value m))
+    (false (maybe-error m))
+    (true (maybe-p m))
+    (true (string-equal "No" (message (maybe-error n))))
     (true (error-p n))
     (false (error-p m))))
 
@@ -29,7 +29,7 @@
    (string-equal
     "Hello"
     (message
-     (just-error
+     (maybe-error
       (bind-error
        (return-error "Hello")))))))
 
@@ -38,16 +38,16 @@
   (let (m n)
     (setf m (bind-value 9))
     (setf n (apply-function m #'+ 1))
-    (true (just-p n))
+    (true (maybe-p n))
     (false (error-p n))
-    (is = 10 (just-value n))
+    (is = 10 (maybe-value n))
     (set-error m (return-error "Errors"))
     (setf n (apply-function m #'- 1))
-    (true (just-p n))
+    (true (maybe-p n))
     (true (error-p n))
     (false (error-p nil))
     (setf n (return-error "Errors"))
-    (true (string-equal (message (just-error m)) (message n)))
+    (true (string-equal (message (maybe-error m)) (message n)))
     (setf m (bind-value 0))
     (setf n 0)
     (true (error-p (apply-function m #'/ 0)))))
