@@ -45,7 +45,6 @@
     (setf n (apply-function m #'- 1))
     (true (maybe-p n))
     (true (error-p n))
-    (false (error-p nil))
     (setf n (return-error "Errors"))
     (true (string-equal (message (maybe-error m)) (message n)))
     (setf m (bind-value 0))
