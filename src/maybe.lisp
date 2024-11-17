@@ -6,7 +6,7 @@
 
 (defstruct maybe
   value
-  error)
+  (error nil :type (or null condition)))
 
 ;;; functions
 
